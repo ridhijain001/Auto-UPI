@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AutoUPI — Global Payments at UPI Speed</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --green:#22c55e;--green-dark:#16a34a;--green-light:#dcfce7;--green-mid:#86efac;
+    --navy:#0f172a;--navy2:#1e293b;--text:#111827;--text2:#6b7280;--text3:#374151;
+    --border:#e5e7eb;--bg:#f9fafb;--white:#ffffff;
+    --radius:12px;--radius-sm:8px;
+  }
+  html{scroll-behavior:smooth}
+  body{font-family:'Inter',system-ui,-apple-system,sans-serif;color:var(--text);background:#fff;overflow-x:hidden}
+  
+  /* NAV */
+  nav{position:sticky;top:0;z-index:100;background:#fff;border-bottom:1px solid var(--border);padding:0 48px;height:64px;display:flex;align-items:center;justify-content:space-between}
+  .nav-logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px;color:var(--navy);text-decoration:none}
+  .nav-logo-icon{width:36px;height:36px;background:var(--navy);border-radius:8px;display:flex;align-items:center;justify-content:center}
+  .nav-logo-icon svg{width:20px;height:20px;fill:white}
+  .nav-links{display:flex;gap:32px}
+  .nav-links a{text-decoration:none;color:var(--text3);font-size:15px;font-weight:500;transition:color .15s}
+  .nav-links a:hover,.nav-links a.active{color:var(--text)}
+  .nav-right{display:flex;align-items:center;gap:16px}
+  .btn-ghost{background:none;border:none;cursor:pointer;font-size:15px;font-weight:500;color:var(--text3);padding:8px 16px}
+  .btn-dark{background:var(--navy);color:#fff;border:none;padding:10px 20px;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;transition:opacity .15s}
+  .btn-dark:hover{opacity:.85}
+
+  /* HERO */
+  #home{min-height:calc(100vh - 64px);background:linear-gradient(135deg,#f0fdf4 0%,#dcfce7 40%,#f0fdf4 100%);position:relative;display:flex;align-items:center;padding:64px 48px}
+  .hero-inner{max-width:1200px;margin:0 auto;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+  .hero-badge{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--border);padding:6px 14px;border-radius:100px;font-size:13px;color:var(--text3);margin-bottom:28px}
+  .hero-badge-dot{width:8px;height:8px;background:var(--green);border-radius:50%}
+  .hero-title{font-size:56px;font-weight:800;line-height:1.1;letter-spacing:-1.5px;color:var(--navy);margin-bottom:20px}
+  .hero-title .green{color:var(--green-dark)}
+  .hero-subtitle{font-size:17px;color:var(--text2);line-height:1.7;margin-bottom:36px;max-width:480px}
+  .hero-btns{display:flex;gap:16px;align-items:center}
+  .btn-primary{background:var(--navy);color:#fff;border:none;padding:14px 28px;border-radius:10px;font-size:16px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px;transition:opacity .15s;text-decoration:none}
+  .btn-primary:hover{opacity:.85}
+  .btn-outline{background:none;border:none;padding:14px 24px;border-radius:10px;font-size:16px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:8px;color:var(--text3);text-decoration:none;transition:color .15s}
+  .btn-outline:hover{color:var(--text)}
+
+  /* HERO CARD */
+  .hero-card{background:#fff;border-radius:20px;padding:32px;box-shadow:0 20px 60px rgba(0,0,0,.08);position:relative}
+  .hero-card-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px}
+  .hero-card-icon{width:48px;height:48px;background:var(--navy);border-radius:12px;display:flex;align-items:center;justify-content:center}
+  .hero-card-icon svg{width:24px;height:24px;stroke:white;fill:none}
+  .hero-card-vol{text-align:right}
+  .hero-card-vol-label{font-size:12px;color:var(--text2);font-weight:500}
+  .hero-card-vol-num{font-size:28px;font-weight:800;color:var(--navy)}
+  .hero-progress{margin-bottom:16px}
+  .progress-bar{height:6px;background:#e5e7eb;border-radius:3px;overflow:hidden}
+  .progress-fill{height:100%;background:var(--green);border-radius:3px;width:82%;animation:progressAnim 2s ease-in-out infinite alternate}
+  @keyframes progressAnim{from{width:78%}to{width:88%}}
+  .hero-progress-labels{display:flex;justify-content:space-between;margin-top:8px;font-size:12px;color:var(--text2)}
+  .hero-stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+  .stat-box{background:#f9fafb;border:1px solid var(--border);border-radius:10px;padding:16px}
+  .stat-box-label{font-size:12px;color:var(--text2);font-weight:500;margin-bottom:4px}
+  .stat-box-val{font-size:22px;font-weight:700;color:var(--navy)}
+  .stat-box-val.green{color:var(--green-dark)}
+  .hero-routes{background:#f9fafb;border:1px solid var(--border);border-radius:10px;padding:16px}
+  .route-row{display:flex;justify-content:space-between;align-items:center;padding:4px 0}
+  .route-name{font-size:14px;color:var(--text3)}
+  .route-status{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--green-dark);font-weight:500}
+  .route-dot{width:6px;height:6px;background:var(--green);border-radius:50%}
+
+  /* SECTIONS */
+  section{padding:80px 48px}
+  .section-inner{max-width:1200px;margin:0 auto}
+  .section-title{font-size:36px;font-weight:800;text-align:center;color:var(--navy);margin-bottom:12px;letter-spacing:-.5px}
+  .section-sub{text-align:center;color:var(--text2);font-size:16px;margin-bottom:56px}
+
+  /* FEATURES */
+  #features{background:#f8fafc}
+  .cards-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .feature-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:32px;transition:box-shadow .2s}
+  .feature-card:hover{box-shadow:0 8px 32px rgba(0,0,0,.07)}
+  .feature-icon{width:44px;height:44px;background:var(--green-light);border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:20px}
+  .feature-icon svg{width:22px;height:22px;stroke:var(--green-dark);fill:none}
+  .feature-title{font-size:18px;font-weight:700;color:var(--navy);margin-bottom:10px}
+  .feature-desc{font-size:14px;color:var(--text2);line-height:1.65}
+
+  /* COMPLIANCE */
+  #compliance{background:#fff}
+  .compliance-inner{display:grid;grid-template-columns:1fr 1fr;border-radius:20px;overflow:hidden;border:1px solid var(--border)}
+  .compliance-left{background:#fff;padding:48px}
+  .compliance-title{font-size:28px;font-weight:800;color:var(--navy);margin-bottom:12px}
+  .compliance-desc{color:var(--text2);font-size:15px;line-height:1.65;margin-bottom:32px}
+  .corridor-list{display:flex;flex-direction:column;gap:0}
+  .corridor-item{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--border)}
+  .corridor-item:last-child{border-bottom:none}
+  .corridor-name{display:flex;align-items:center;gap:10px;font-size:15px;color:var(--text3);font-weight:500}
+  .cdot{width:10px;height:10px;border-radius:50%}
+  .cdot.active{background:var(--green)}
+  .cdot.testing{background:#d1d5db}
+  .corridor-badge{font-size:13px;font-weight:600}
+  .corridor-badge.active{color:var(--green-dark)}
+  .corridor-badge.testing{color:var(--text2)}
+  .compliance-map{background:var(--navy);position:relative;overflow:hidden;min-height:400px}
+  .map-canvas{width:100%;height:100%;position:relative}
+  .map-node{position:absolute;display:flex;flex-direction:column;align-items:center;gap:4px}
+  .map-node-dot{width:14px;height:14px;background:var(--green);border-radius:50%;box-shadow:0 0 0 4px rgba(34,197,94,.2);animation:pulse 2s ease-in-out infinite}
+  @keyframes pulse{0%,100%{box-shadow:0 0 0 4px rgba(34,197,94,.2)}50%{box-shadow:0 0 0 8px rgba(34,197,94,.1)}}
+  .map-node-label{font-size:11px;color:var(--green-mid);font-weight:600;white-space:nowrap}
+  .map-badges{position:absolute;bottom:20px;left:20px;right:20px;display:flex;justify-content:space-between}
+  .map-badge{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);padding:6px 14px;border-radius:100px;font-size:12px;color:#fff;display:flex;align-items:center;gap:6px}
+  .map-badge-dot{width:6px;height:6px;background:var(--green);border-radius:50%}
+  svg.corridors{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none}
+
+  /* PRICING */
+  #pricing{background:#f8fafc}
+  .pricing-inner{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+  .calc-card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:32px}
+  .calc-title{font-size:20px;font-weight:700;color:var(--navy);margin-bottom:4px}
+  .calc-sub{font-size:13px;color:var(--text2);margin-bottom:24px}
+  .calc-label{font-size:11px;font-weight:700;color:var(--text2);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}
+  .calc-input-row{display:flex;align-items:center;border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:4px}
+  .calc-input{border:none;outline:none;font-size:22px;font-weight:700;color:var(--navy);padding:14px 16px;flex:1;background:#fff}
+  .calc-select{border:none;outline:none;background:#f3f4f6;padding:14px 12px;font-size:14px;font-weight:600;color:var(--text3);cursor:pointer;border-left:1px solid var(--border)}
+  .swap-btn-wrap{display:flex;justify-content:center;margin:16px 0}
+  .swap-btn{width:40px;height:40px;background:var(--navy);border:none;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .2s}
+  .swap-btn:hover{transform:rotate(180deg)}
+  .swap-btn svg{width:18px;height:18px;stroke:white;fill:none}
+  .calc-rows{margin-top:20px;border-top:1px solid var(--border);padding-top:16px}
+  .calc-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;font-size:14px}
+  .calc-row-label{color:var(--text2)}
+  .calc-row-val{font-weight:600;color:var(--text3)}
+  .calc-row-val.savings{color:var(--green-dark);font-size:18px;font-weight:800}
+  .legacy-box{margin-top:0}
+  .legacy-title{font-size:28px;font-weight:800;color:var(--navy);margin-bottom:12px}
+  .legacy-desc{font-size:15px;color:var(--text2);line-height:1.65;margin-bottom:32px}
+  .compare-block{margin-bottom:28px}
+  .compare-header{display:flex;justify-content:space-between;font-size:14px;font-weight:600;color:var(--text3);margin-bottom:8px}
+  .compare-header .days{color:var(--text2);font-weight:400}
+  .compare-header .fast{color:var(--green-dark)}
+  .compare-bar-wrap{position:relative;height:8px;background:#e5e7eb;border-radius:4px;margin-bottom:12px}
+  .compare-bar-fill{height:100%;border-radius:4px}
+  .compare-bar-fill.slow{background:#d1d5db;width:100%}
+  .compare-bar-fill.fast{background:var(--green);width:20%;animation:fastBar 1.5s ease-in-out infinite alternate}
+  @keyframes fastBar{from{width:18%}to{width:22%}}
+  .compare-labels{display:flex;gap:12px;flex-wrap:wrap}
+  .compare-label{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text2)}
+  .compare-label.green{color:var(--green-dark)}
+
+  /* TRANSFER DEMO */
+  #transfer{background:#fff}
+  .transfer-wrap{max-width:640px;margin:0 auto}
+  .transfer-title{font-size:36px;font-weight:800;text-align:center;color:var(--navy);margin-bottom:12px}
+  .transfer-sub{text-align:center;color:var(--text2);font-size:16px;margin-bottom:48px}
+  .transfer-card{background:#fff;border:1px solid var(--border);border-radius:20px;padding:40px;box-shadow:0 4px 24px rgba(0,0,0,.05)}
+  .tf-label{font-size:11px;font-weight:700;color:var(--text2);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px}
+  .tf-amount-row{display:flex;align-items:center;border:1px solid var(--border);border-radius:10px;padding:14px 18px;margin-bottom:24px;font-size:24px;font-weight:700;color:var(--navy);gap:8px}
+  .tf-amount-row input{border:none;outline:none;font-size:24px;font-weight:700;color:var(--navy);width:100%;background:transparent}
+  .destinations{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+  .dest-btn{border:1px solid var(--border);border-radius:10px;padding:12px;cursor:pointer;background:#fff;text-align:left;transition:all .15s}
+  .dest-btn:hover{border-color:var(--green)}
+  .dest-btn.active{border-color:var(--green);background:var(--green-light)}
+  .dest-code{font-size:16px;font-weight:700;color:var(--navy);margin-bottom:2px}
+  .dest-name{font-size:12px;font-weight:600;color:var(--text3);margin-bottom:2px}
+  .dest-cur{font-size:11px;color:var(--text2)}
+  .tf-two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
+  .tf-input-group{}
+  .tf-input{width:100%;border:1px solid var(--border);border-radius:10px;padding:12px 14px;font-size:15px;color:var(--navy);display:flex;align-items:center;gap:10px;background:#fff}
+  .tf-input svg{width:16px;height:16px;stroke:var(--text2);fill:none;flex-shrink:0}
+  .tf-input input{border:none;outline:none;font-size:15px;color:var(--navy);width:100%;background:transparent}
+  .fx-box{background:#f9fafb;border-radius:10px;padding:16px;margin-bottom:24px}
+  .fx-row{display:flex;justify-content:space-between;font-size:14px;margin-bottom:6px}
+  .fx-row:last-child{margin-bottom:0}
+  .fx-key{color:var(--text2);display:flex;align-items:center;gap:6px}
+  .fx-val{font-weight:600;color:var(--navy)}
+  .fx-val.green{color:var(--green-dark);font-size:17px;font-weight:700}
+  .btn-send{width:100%;background:var(--navy);color:#fff;border:none;padding:18px;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:opacity .15s;margin-bottom:12px}
+  .btn-send:hover{opacity:.85}
+  .ask-ai-link{text-align:center;font-size:14px;color:var(--text2);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px}
+  .ask-ai-link:hover{color:var(--green-dark)}
+
+  /* REVIEW SCREEN */
+  .review-back{display:flex;align-items:center;gap:6px;color:var(--text2);font-size:14px;cursor:pointer;margin-bottom:24px;background:none;border:none;padding:0}
+  .review-back:hover{color:var(--text)}
+  .review-title{font-size:28px;font-weight:800;color:var(--navy);text-align:center;margin-bottom:6px}
+  .review-sub{text-align:center;color:var(--text2);font-size:15px;margin-bottom:28px}
+  .review-box{border:1px solid var(--border);border-radius:12px;padding:20px 24px;margin-bottom:16px}
+  .review-box-label{font-size:11px;font-weight:700;color:var(--text2);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px}
+  .review-box-val{font-size:24px;font-weight:800;color:var(--navy)}
+  .review-box-sub{font-size:13px;color:var(--text2);margin-top:2px}
+  .review-2col{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+  .review-box.green-tint{background:var(--green-light);border-color:var(--green-mid)}
+  .review-box.green-tint .review-box-val{color:var(--green-dark)}
+
+  /* PROCESSING */
+  .processing-title{font-size:28px;font-weight:800;color:var(--navy);text-align:center;margin-bottom:6px}
+  .processing-sub{text-align:center;color:var(--text2);font-size:15px;margin-bottom:32px}
+  .stages-list{display:flex;flex-direction:column;gap:12px}
+  .stage-item{display:flex;align-items:center;gap:16px;padding:16px 20px;border-radius:12px;border:1px solid var(--border);background:#fff;transition:all .3s}
+  .stage-item.done{background:var(--green-light);border-color:var(--green-mid)}
+  .stage-item.active{border-color:var(--green);background:#fff}
+  .stage-item.pending{opacity:.45}
+  .stage-icon{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .stage-item.done .stage-icon{background:var(--green)}
+  .stage-item.active .stage-icon{background:var(--navy)}
+  .stage-item.pending .stage-icon{background:#e5e7eb}
+  .stage-icon svg{width:18px;height:18px}
+  .stage-info{flex:1}
+  .stage-name{font-size:15px;font-weight:600;color:var(--navy)}
+  .stage-item.pending .stage-name{color:var(--text2)}
+  .stage-desc{font-size:13px;color:var(--text2)}
+  .stage-extra{font-size:13px;color:var(--green-dark);font-weight:600}
+
+  /* SUCCESS */
+  .success-icon{width:64px;height:64px;background:var(--green-light);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px}
+  .success-icon svg{width:32px;height:32px;stroke:var(--green-dark);fill:none;stroke-width:2.5}
+  .success-title{font-size:28px;font-weight:800;color:var(--navy);text-align:center;margin-bottom:6px}
+  .success-sub{text-align:center;color:var(--text2);font-size:15px;margin-bottom:28px}
+  .receipt-table{border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:20px}
+  .receipt-row{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;border-bottom:1px solid var(--border);font-size:14px}
+  .receipt-row:last-child{border-bottom:none}
+  .receipt-key{color:var(--text2)}
+  .receipt-val{font-weight:600;color:var(--navy)}
+  .receipt-val.green{color:var(--green-dark)}
+  .ai-summary-box{background:var(--green-light);border:1px solid var(--green-mid);border-radius:12px;padding:20px 24px;margin-bottom:20px}
+  .ai-summary-label{font-size:11px;font-weight:700;color:var(--green-dark);letter-spacing:.08em;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+  .ai-summary-text{font-size:14px;color:var(--text3);line-height:1.6;margin-bottom:14px}
+  .ai-summary-btns{display:flex;gap:10px;flex-wrap:wrap}
+  .ai-chip{border:1px solid var(--green-mid);background:#fff;padding:6px 14px;border-radius:100px;font-size:13px;font-weight:500;color:var(--text3);cursor:pointer;display:flex;align-items:center;gap:6px;transition:all .15s}
+  .ai-chip:hover{background:var(--green-light);border-color:var(--green)}
+  .success-btns{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+  .btn-outline2{border:1px solid var(--border);background:#fff;padding:12px;border-radius:10px;font-size:14px;font-weight:500;color:var(--text3);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:all .15s}
+  .btn-outline2:hover{border-color:var(--text3)}
+  .btn-outline2 svg{width:16px;height:16px;stroke:currentColor;fill:none}
+
+  /* HIDDEN SCREENS */
+  .screen{display:none}
+  .screen.active{display:block}
+
+  /* AI CHAT */
+  .ai-fab{position:fixed;bottom:28px;right:28px;width:52px;height:52px;background:var(--navy);border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(0,0,0,.2);z-index:200;transition:transform .2s}
+  .ai-fab:hover{transform:scale(1.08)}
+  .ai-fab svg{width:24px;height:24px;stroke:white;fill:none}
+  .ai-fab-dot{position:absolute;top:4px;right:4px;width:12px;height:12px;background:var(--green);border-radius:50%;border:2px solid white}
+  .ai-panel{position:fixed;bottom:92px;right:28px;width:380px;max-height:560px;background:#fff;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.15);z-index:200;display:flex;flex-direction:column;overflow:hidden;transform:scale(.95) translateY(10px);opacity:0;pointer-events:none;transition:all .2s}
+  .ai-panel.open{transform:scale(1) translateY(0);opacity:1;pointer-events:all}
+  .ai-header{background:var(--navy);padding:16px 20px;display:flex;align-items:center;justify-content:space-between}
+  .ai-header-left{display:flex;align-items:center;gap:12px}
+  .ai-avatar{width:36px;height:36px;background:var(--green-dark);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px}
+  .ai-name{font-size:15px;font-weight:700;color:#fff}
+  .ai-status{font-size:12px;color:var(--green-mid);display:flex;align-items:center;gap:5px}
+  .ai-status-dot{width:6px;height:6px;background:var(--green);border-radius:50%}
+  .ai-close{background:none;border:none;cursor:pointer;color:#9ca3af;padding:4px;transition:color .15s}
+  .ai-close:hover{color:#fff}
+  .ai-close svg{width:20px;height:20px;stroke:currentColor;fill:none}
+  .ai-body{flex:1;overflow-y:auto;padding:20px}
+  .ai-welcome{font-size:15px;color:var(--text3);line-height:1.6;margin-bottom:20px;padding:14px 16px;background:#f9fafb;border-radius:10px}
+  .ai-try-label{font-size:11px;font-weight:700;color:var(--text2);letter-spacing:.08em;margin-bottom:12px}
+  .ai-chip-row{display:flex;flex-direction:column;gap:8px}
+  .ai-suggestion{border:1px solid var(--border);background:#fff;padding:10px 16px;border-radius:8px;font-size:14px;color:var(--text3);cursor:pointer;text-align:left;transition:all .15s}
+  .ai-suggestion:hover{border-color:var(--green);background:var(--green-light)}
+  .ai-messages{display:flex;flex-direction:column;gap:12px}
+  .msg{display:flex;flex-direction:column;gap:4px}
+  .msg.user{align-items:flex-end}
+  .msg.bot{align-items:flex-start}
+  .msg-bubble{padding:10px 14px;border-radius:10px;font-size:14px;line-height:1.55;max-width:90%}
+  .msg.user .msg-bubble{background:var(--navy);color:#fff;border-radius:10px 10px 2px 10px}
+  .msg.bot .msg-bubble{background:#f3f4f6;color:var(--text3);border-radius:10px 10px 10px 2px}
+  .ai-active-banner{background:rgba(34,197,94,.1);padding:8px 16px;font-size:13px;color:var(--green-dark);display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--green-light)}
+  .ai-active-dot{width:6px;height:6px;background:var(--green);border-radius:50%}
+  .ai-footer{padding:16px;border-top:1px solid var(--border);display:flex;gap:10px;align-items:center}
+  .ai-input{flex:1;border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-size:14px;outline:none;font-family:inherit;transition:border-color .15s}
+  .ai-input:focus{border-color:var(--green)}
+  .ai-send{background:var(--navy);border:none;width:36px;height:36px;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:opacity .15s}
+  .ai-send:hover{opacity:.8}
+  .ai-send svg{width:16px;height:16px;stroke:white;fill:none}
+  .typing{display:flex;gap:4px;padding:10px 14px;background:#f3f4f6;border-radius:10px;width:fit-content}
+  .typing span{width:6px;height:6px;background:var(--text2);border-radius:50%;animation:bounce .9s infinite}
+  .typing span:nth-child(2){animation-delay:.15s}
+  .typing span:nth-child(3){animation-delay:.3s}
+  @keyframes bounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
+
+  /* FOOTER */
+  footer{background:var(--navy);color:#9ca3af;padding:40px 48px;text-align:center;font-size:14px}
+  footer strong{color:#fff}
+
+  /* GROQ KEY MODAL */
+  .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s}
+  .modal-overlay.open{opacity:1;pointer-events:all}
+  .modal{background:#fff;border-radius:16px;padding:32px;max-width:440px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+  .modal h3{font-size:20px;font-weight:700;color:var(--navy);margin-bottom:8px}
+  .modal p{color:var(--text2);font-size:14px;line-height:1.6;margin-bottom:20px}
+  .modal input{width:100%;border:1px solid var(--border);border-radius:8px;padding:12px 14px;font-size:14px;outline:none;margin-bottom:12px;font-family:monospace;transition:border-color .15s}
+  .modal input:focus{border-color:var(--green)}
+  .modal-btns{display:flex;gap:10px}
+  .btn-modal-cancel{flex:1;background:#f3f4f6;border:none;padding:12px;border-radius:8px;font-size:14px;font-weight:500;color:var(--text3);cursor:pointer}
+  .btn-modal-save{flex:2;background:var(--navy);border:none;padding:12px;border-radius:8px;font-size:14px;font-weight:600;color:#fff;cursor:pointer;transition:opacity .15s}
+  .btn-modal-save:hover{opacity:.85}
+
+  /* SPINNER */
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .spinner{width:18px;height:18px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
+
+  /* CONFETTI */
+  .confetti-piece{position:fixed;top:-20px;width:8px;height:8px;border-radius:2px;animation:confettiFall linear forwards;z-index:9999;pointer-events:none}
+  @keyframes confettiFall{to{transform:translateY(110vh) rotate(720deg);opacity:0}}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#" onclick="goHome()">
+    <div class="nav-logo-icon">
+      <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+    </div>
+    AutoUPI
+  </a>
+  <div class="nav-links">
+    <a href="#features" id="nav-solutions">Solutions</a>
+    <a href="#compliance" id="nav-compliance">Compliance</a>
+    <a href="#pricing" id="nav-pricing">Pricing</a>
+  </div>
+  <div class="nav-right">
+    <button class="btn-ghost">Sign in</button>
+    <button class="btn-dark" onclick="document.getElementById('transfer').scrollIntoView({behavior:'smooth'})">Get Started</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="home" style="padding:0 48px;min-height:calc(100vh - 64px)">
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-badge">
+        <span class="hero-badge-dot"></span>
+        Live on 12 corridors · GIFT City Regulated
+      </div>
+      <h1 class="hero-title">Global Payments at<br><span class="green">UPI Speed.</span></h1>
+      <p class="hero-subtitle">Send money anywhere in the world in under 60 seconds with up to 95% lower costs. Institutional-grade remittance powered by GIFT City.</p>
+      <div class="hero-btns">
+        <a class="btn-primary" href="#transfer" onclick="setTimeout(()=>document.getElementById('transfer').scrollIntoView({behavior:'smooth'}),100)">
+          Start Transfer
+          <svg viewBox="0 0 24 24" width="18" height="18" stroke="white" stroke-width="2" fill="none"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a class="btn-outline" href="#">
+          <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="10"/><path d="M10 8l6 4-6 4V8z"/></svg>
+          Watch Demo
+        </a>
+      </div>
+    </div>
+    <div class="hero-card">
+      <div class="hero-card-header">
+        <div class="hero-card-icon">
+          <svg viewBox="0 0 24 24" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg>
+        </div>
+        <div class="hero-card-vol">
+          <div class="hero-card-vol-label">Global Volume</div>
+          <div class="hero-card-vol-num">$4.2B+</div>
+        </div>
+      </div>
+      <div class="hero-progress">
+        <div class="progress-bar"><div class="progress-fill"></div></div>
+        <div class="hero-progress-labels"><span>Real-time Settlement</span><span>Active Nodes: 124</span></div>
+      </div>
+      <div class="hero-stats-grid">
+        <div class="stat-box">
+          <div class="stat-box-label">Avg. Fee</div>
+          <div class="stat-box-val">0.15%</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-box-label">Speed</div>
+          <div class="stat-box-val green">42s</div>
+        </div>
+      </div>
+      <div class="hero-routes">
+        <div class="route-row">
+          <span class="route-name">IN → USA</span>
+          <span class="route-status"><span class="route-dot"></span>Settled</span>
+        </div>
+        <div class="route-row">
+          <span class="route-name">IN → UAE</span>
+          <span class="route-status"><span class="route-dot"></span>Settled</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="section-inner">
+    <h2 class="section-title">Institutional-Grade Engineering</h2>
+    <p class="section-sub">Precision, transparency, and compliance are baked into our DNA.</p>
+    <div class="cards-grid">
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <div class="feature-title">Atomic Settlement</div>
+        <p class="feature-desc">Guaranteed settlement in under 60 seconds. Funds move directly between central bank-backed accounts.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="feature-title">FEMA Compliant</div>
+        <p class="feature-desc">Automated regulatory reporting for RBI and FEMA policies. Real-time LRS tracking integrated.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" stroke-width="2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+        </div>
+        <div class="feature-title">Pure Fiat Rail</div>
+        <p class="feature-desc">Zero exposure to volatile crypto assets. Direct treasury rails for institutional stability.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPLIANCE / CORRIDOR MAP -->
+<section id="compliance" style="background:#fff">
+  <div class="section-inner">
+    <div class="compliance-inner">
+      <div class="compliance-left">
+        <h2 class="compliance-title">Global Corridor Network</h2>
+        <p class="compliance-desc">Live transaction flow across our primary corridors. India is connected like never before.</p>
+        <div class="corridor-list">
+          <div class="corridor-item">
+            <span class="corridor-name"><span class="cdot active"></span>IN ↔ UAE</span>
+            <span class="corridor-badge active">Active</span>
+          </div>
+          <div class="corridor-item">
+            <span class="corridor-name"><span class="cdot active"></span>IN ↔ USA</span>
+            <span class="corridor-badge active">Active</span>
+          </div>
+          <div class="corridor-item">
+            <span class="corridor-name"><span class="cdot active"></span>IN ↔ SGP</span>
+            <span class="corridor-badge active">Active</span>
+          </div>
+          <div class="corridor-item">
+            <span class="corridor-name"><span class="cdot testing"></span>IN ↔ UK</span>
+            <span class="corridor-badge testing">Testing</span>
+          </div>
+        </div>
+      </div>
+      <div class="compliance-map">
+        <svg class="corridors" viewBox="0 0 600 400">
+          <!-- Animated dashed lines -->
+          <defs>
+            <style>
+              .corridor-line{stroke:#22c55e;stroke-width:1.5;fill:none;stroke-dasharray:6 4;stroke-dashoffset:0;animation:dashFlow 3s linear infinite}
+              @keyframes dashFlow{to{stroke-dashoffset:-30}}
+            </style>
+          </defs>
+          <path class="corridor-line" d="M 480 100 Q 430 160 380 180"/>
+          <path class="corridor-line" d="M 380 180 Q 340 200 320 220" style="animation-delay:-.5s"/>
+          <path class="corridor-line" d="M 320 220 Q 390 240 440 280" style="animation-delay:-1s"/>
+          <path class="corridor-line" d="M 200 130 Q 290 155 380 180" style="animation-delay:-1.5s"/>
+        </svg>
+        <!-- Nodes -->
+        <div class="map-node" style="top:80px;left:430px"><div class="map-node-dot"></div><div class="map-node-label">LDN</div></div>
+        <div class="map-node" style="top:110px;left:165px"><div class="map-node-dot"></div><div class="map-node-label">NYC</div></div>
+        <div class="map-node" style="top:163px;left:338px"><div class="map-node-dot"></div><div class="map-node-label">DXB</div></div>
+        <div class="map-node" style="top:198px;left:282px"><div class="map-node-dot"></div><div class="map-node-label">MUM</div></div>
+        <div class="map-node" style="top:255px;left:394px"><div class="map-node-dot"></div><div class="map-node-label">SGP</div></div>
+        <div class="map-badges">
+          <div class="map-badge"><span class="map-badge-dot"></span>Latency 2.4ms</div>
+          <div class="map-badge">🔒 256-bit secure</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="section-inner">
+    <div class="pricing-inner">
+      <div class="calc-card">
+        <div class="calc-title">Live Calculator</div>
+        <div class="calc-sub">Mid-market FX. Zero hidden fees.</div>
+        <div class="calc-label">YOU SEND</div>
+        <div class="calc-input-row">
+          <input class="calc-input" id="calc-send" type="number" value="100000" oninput="updateCalc()">
+          <select class="calc-select" id="calc-from" onchange="updateCalc()">
+            <option value="INR">INR</option>
+            <option value="USD">USD</option>
+          </select>
+        </div>
+        <div class="swap-btn-wrap">
+          <button class="swap-btn" onclick="swapCurrencies()">
+            <svg viewBox="0 0 24 24" stroke-width="2"><path d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4"/></svg>
+          </button>
+        </div>
+        <div class="calc-label">RECIPIENT GETS</div>
+        <div class="calc-input-row">
+          <input class="calc-input" id="calc-recv" type="number" value="1200.00" readonly style="color:#6b7280">
+          <select class="calc-select" id="calc-to" onchange="updateCalc()">
+            <option value="USD">USD</option>
+            <option value="AED">AED</option>
+            <option value="SGD">SGD</option>
+            <option value="GBP">GBP</option>
+          </select>
+        </div>
+        <div class="calc-rows">
+          <div class="calc-row">
+            <span class="calc-row-label">FX Rate (Mid-market)</span>
+            <span class="calc-row-val" id="calc-rate-display">1 INR = 0.012 USD</span>
+          </div>
+          <div class="calc-row">
+            <span class="calc-row-label">Total Fees</span>
+            <span class="calc-row-val" style="color:#16a34a">₹0.00</span>
+          </div>
+          <div class="calc-row">
+            <span class="calc-row-label" style="font-weight:700;color:#111">Total Savings vs SWIFT</span>
+            <span class="calc-row-val savings" id="calc-savings">₹4,200</span>
+          </div>
+        </div>
+      </div>
+      <div class="legacy-box">
+        <h2 class="legacy-title">Legacy vs. AutoUPI</h2>
+        <p class="legacy-desc">We've rebuilt the financial plumbing from the ground up. No correspondent banks, no opaque delays, no inflated FX spreads.</p>
+        <div class="compare-block">
+          <div class="compare-header">
+            <span>Traditional SWIFT</span>
+            <span class="days">5–7 Business Days</span>
+          </div>
+          <div class="compare-bar-wrap">
+            <div class="compare-bar-fill slow"></div>
+          </div>
+          <div class="compare-labels">
+            <span class="compare-label">ORIGIN</span>
+            <span class="compare-label">BANK A</span>
+            <span class="compare-label">BANK B</span>
+            <span class="compare-label">CORRESPONDENT</span>
+            <span class="compare-label">DEST</span>
+          </div>
+        </div>
+        <div class="compare-block">
+          <div class="compare-header">
+            <span>AutoUPI</span>
+            <span class="fast">Under 60 Seconds</span>
+          </div>
+          <div class="compare-bar-wrap">
+            <div class="compare-bar-fill fast"></div>
+          </div>
+          <div class="compare-labels">
+            <span class="compare-label green">ORIGIN</span>
+            <span class="compare-label green">AUTOUPI NODE</span>
+            <span class="compare-label green">DEST</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRANSFER DEMO -->
+<section id="transfer" style="background:#f8fafc">
+  <div class="transfer-wrap">
+    <h2 class="transfer-title">Send Money in Seconds</h2>
+    <p class="transfer-sub">Experience a real cross-border transfer end-to-end. No funds actually move.</p>
+
+    <!-- SCREEN 1: FORM -->
+    <div id="screen-form" class="transfer-card screen active">
+      <div class="tf-label">YOU SEND (INR)</div>
+      <div class="tf-amount-row">
+        <span>₹</span>
+        <input type="number" id="tf-amount" value="50000" oninput="updateTransfer()">
+      </div>
+      <div class="tf-label">DESTINATION</div>
+      <div class="destinations">
+        <button class="dest-btn active" onclick="selectDest(this,'US','USA','USD','0.0118')">
+          <div class="dest-code">US</div>
+          <div class="dest-name">USA</div>
+          <div class="dest-cur">USD</div>
+        </button>
+        <button class="dest-btn" onclick="selectDest(this,'AE','UAE','AED','0.0440')">
+          <div class="dest-code">AE</div>
+          <div class="dest-name">UAE</div>
+          <div class="dest-cur">AED</div>
+        </button>
+        <button class="dest-btn" onclick="selectDest(this,'SG','SGP','SGD','0.0160')">
+          <div class="dest-code">SG</div>
+          <div class="dest-name">SGP</div>
+          <div class="dest-cur">SGD</div>
+        </button>
+        <button class="dest-btn" onclick="selectDest(this,'GB','GBR','GBP','0.0095')">
+          <div class="dest-code">GB</div>
+          <div class="dest-name">GBR</div>
+          <div class="dest-cur">GBP</div>
+        </button>
+      </div>
+      <div class="tf-two-col">
+        <div class="tf-input-group">
+          <div class="tf-label">RECIPIENT NAME</div>
+          <div class="tf-input">
+            <svg viewBox="0 0 24 24" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <input id="tf-name" type="text" value="John Smith" placeholder="Recipient name">
+          </div>
+        </div>
+        <div class="tf-input-group">
+          <div class="tf-label">RECEIVER BANK</div>
+          <div class="tf-input">
+            <svg viewBox="0 0 24 24" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>
+            <input id="tf-bank" type="text" value="Bank of America" placeholder="Receiver bank">
+          </div>
+        </div>
+      </div>
+      <div class="fx-box">
+        <div class="fx-row">
+          <span class="fx-key">
+            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg>
+            FX Rate
+          </span>
+          <span class="fx-val" id="tf-rate-display">1 INR = 0.0118 USD</span>
+        </div>
+        <div class="fx-row">
+          <span class="fx-key">Recipient Gets</span>
+          <span class="fx-val green" id="tf-recv-display">USD 590.00</span>
+        </div>
+      </div>
+      <button class="btn-send" onclick="goToReview()">
+        <svg viewBox="0 0 24 24" width="18" height="18" stroke="white" stroke-width="2" fill="none"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+        Review Transfer
+        <svg viewBox="0 0 24 24" width="16" height="16" stroke="white" stroke-width="2" fill="none"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+      <div class="ask-ai-link" onclick="openAI()">
+        <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3M12 17h.01"/></svg>
+        Ask AutoUPI AI about this transfer
+      </div>
+    </div>
+
+    <!-- SCREEN 2: REVIEW -->
+    <div id="screen-review" class="transfer-card screen">
+      <button class="review-back" onclick="showScreen('screen-form')">
+        <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Edit
+      </button>
+      <h2 class="review-title">Review Transfer</h2>
+      <p class="review-sub">Double-check the details before settling</p>
+      <div class="review-box">
+        <div class="review-box-label">AMOUNT SENT</div>
+        <div class="review-box-val" id="rv-amount">₹50,000</div>
+        <div class="review-box-sub">From your linked UPI account</div>
+      </div>
+      <div class="review-2col">
+        <div class="review-box">
+          <div class="review-box-label">
+            <svg viewBox="0 0 24 24" width="12" height="12" style="display:inline;stroke:#6b7280;fill:none;stroke-width:2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            RECEIVER
+          </div>
+          <div class="review-box-val" style="font-size:18px" id="rv-receiver">John Smith</div>
+          <div class="review-box-sub">Beneficiary</div>
+        </div>
+        <div class="review-box">
+          <div class="review-box-label">
+            <svg viewBox="0 0 24 24" width="12" height="12" style="display:inline;stroke:#6b7280;fill:none;stroke-width:2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>
+            BANK
+          </div>
+          <div class="review-box-val" style="font-size:18px" id="rv-bank">Bank of America</div>
+          <div class="review-box-sub" id="rv-corridor">IN → USA</div>
+        </div>
+      </div>
+      <div class="review-2col">
+        <div class="review-box">
+          <div class="review-box-label">EXCHANGE RATE</div>
+          <div class="review-box-val" style="font-size:18px" id="rv-rate">1 INR = 0.0118 USD</div>
+          <div class="review-box-sub">Mid-market · no markup</div>
+        </div>
+        <div class="review-box green-tint">
+          <div class="review-box-label">RECEIVER GETS</div>
+          <div class="review-box-val" id="rv-gets">USD 590.00</div>
+          <div class="review-box-sub">Credited to recipient account</div>
+        </div>
+      </div>
+      <div class="review-2col">
+        <div class="review-box">
+          <div class="review-box-label">TRANSFER FEE</div>
+          <div class="review-box-val" style="font-size:20px" id="rv-fee">₹250</div>
+          <div class="review-box-sub">All-in · no hidden FX</div>
+        </div>
+        <div class="review-box green-tint">
+          <div class="review-box-label">
+            <svg viewBox="0 0 24 24" width="12" height="12" style="display:inline;stroke:#16a34a;fill:none;stroke-width:2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+            YOU SAVE VS BANK
+          </div>
+          <div class="review-box-val" id="rv-savings">₹3,450</div>
+          <div class="review-box-sub">vs ~6% SWIFT total cost</div>
+        </div>
+      </div>
+      <div class="review-box" style="margin-bottom:24px">
+        <div class="review-box-label">
+          <svg viewBox="0 0 24 24" width="12" height="12" style="display:inline;stroke:#6b7280;fill:none;stroke-width:2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          ESTIMATED SETTLEMENT
+        </div>
+        <div class="review-box-val">42 seconds</div>
+        <div class="review-box-sub">vs SWIFT 2–5 business days</div>
+      </div>
+      <button class="btn-send" onclick="startProcessing()">
+        <svg viewBox="0 0 24 24" width="18" height="18" stroke="white" stroke-width="2" fill="none"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+        Send Transfer
+        <svg viewBox="0 0 24 24" width="16" height="16" stroke="white" stroke-width="2" fill="none"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+      <div class="ask-ai-link" onclick="openAI();aiWatchTransfer()">
+        <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3M12 17h.01"/></svg>
+        Ask AutoUPI AI about this transfer
+      </div>
+    </div>
+
+    <!-- SCREEN 3: PROCESSING -->
+    <div id="screen-processing" class="transfer-card screen">
+      <h2 class="processing-title" style="margin-bottom:6px">Processing Transfer</h2>
+      <p style="text-align:center;color:var(--text2);font-size:15px;margin-bottom:32px">Your payment journey — live</p>
+      <div class="stages-list" id="stages-list">
+        <div class="stage-item pending" id="stage-0">
+          <div class="stage-icon">
+            <svg viewBox="0 0 24 24" width="18" height="18" stroke="white" stroke-width="2" fill="none"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/></svg>
+          </div>
+          <div class="stage-info">
+            <div class="stage-name">UPI Payment Received</div>
+            <div class="stage-desc">Funds debited from your linked account</div>
+          </div>
+        </div>
+        <div class="stage-item pending" id="stage-1">
+          <div class="stage-icon">
+            <svg viewBox="0 0 24 24" width="18" height="18" stroke="white" stroke-width="2" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <div class="stage-info">
+            <div class="stage-name">INR Locked in Reserve</div>
+            <div class="stage-desc">RBI-regulated escrow vault</div>
+          </div>
+        </div>
+        <div class="stage-item pending" id="stage-2">
+          <div class="stage-icon">
+            <svg viewBox="0 0 24 24" width="18" height="18" stroke="white" stroke-width="2" fill="none"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          </div>
+          <div class="stage-info">
+            <div class="stage-name">Settlement Token Generated</div>
+            <div class="stage-desc">GIFT City IFSC issuance</div>
+          </div>
+        </div>
+        <div class="stage-item pending" id="stage-3">
+          <div class="stage-icon">
+            <svg viewBox="0 0 24 24" width="18" height="18" stroke="white" stroke-width="2" fill="none"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+          </div>
+          <div class="stage-info">
+            <div class="stage-name">FX Conversion at Mid-Market</div>
+            <div class="stage-desc">Live interbank rate</div>
+          </div>
+          <div class="stage-extra" id="fx-rate-extra" style="display:none">1 INR = 0.0118 USD</div>
+        </div>
+        <div class="stage-item pending" id="stage-4">
+          <div class="stage-icon">
+            <svg viewBox="0 0 24 24" width="18" height="18" stroke="white" stroke-width="2" fill="none"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg>
+          </div>
+          <div class="stage-info">
+            <div class="stage-name">Global Transfer in Motion</div>
+            <div class="stage-desc">Routed via partner bank network</div>
+          </div>
+        </div>
+        <div class="stage-item pending" id="stage-5">
+          <div class="stage-icon">
+            <svg viewBox="0 0 24 24" width="18" height="18" stroke="white" stroke-width="2" fill="none"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>
+          </div>
+          <div class="stage-info">
+            <div class="stage-name">Delivered to Receiver Bank</div>
+            <div class="stage-desc">Credited to recipient account</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 4: SUCCESS -->
+    <div id="screen-success" class="transfer-card screen">
+      <div class="success-icon">
+        <svg viewBox="0 0 24 24" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <h2 class="success-title">Transfer Completed Successfully</h2>
+      <p class="success-sub" id="success-sub">USD 590.00 delivered to John Smith in 42s</p>
+      <div class="receipt-table">
+        <div class="receipt-row"><span class="receipt-key">Transfer ID</span><span class="receipt-val" id="rc-id">AUP-9CYK50NV</span></div>
+        <div class="receipt-row"><span class="receipt-key">Amount Sent</span><span class="receipt-val" id="rc-sent">₹50,000</span></div>
+        <div class="receipt-row"><span class="receipt-key">Receiver</span><span class="receipt-val" id="rc-recv">John Smith · Bank of America</span></div>
+        <div class="receipt-row"><span class="receipt-key">Amount Received</span><span class="receipt-val green" id="rc-got">USD 590.00</span></div>
+        <div class="receipt-row"><span class="receipt-key">Settlement Time</span><span class="receipt-val">42s</span></div>
+        <div class="receipt-row"><span class="receipt-key">Money Saved</span><span class="receipt-val green" id="rc-saved">₹3,450</span></div>
+      </div>
+      <div class="ai-summary-box">
+        <div class="ai-summary-label">
+          <svg viewBox="0 0 24 24" width="14" height="14" stroke="#16a34a" stroke-width="2" fill="none"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3M12 17h.01"/></svg>
+          AUTOUPI AI SUMMARY
+        </div>
+        <p class="ai-summary-text" id="ai-summary-text">Your ₹50,000 transfer to John Smith at Bank of America was completed in 42 seconds. Compared to traditional banking channels, you saved approximately ₹3,450 in fees and FX markups.</p>
+        <div class="ai-summary-btns">
+          <button class="ai-chip" onclick="explainSavings()">Explain Savings</button>
+          <button class="ai-chip" onclick="feeBreakdown()">Fee Breakdown</button>
+          <button class="ai-chip" onclick="openAI()">
+            <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3M12 17h.01"/></svg>
+            Ask AI
+          </button>
+        </div>
+      </div>
+      <div class="success-btns">
+        <button class="btn-outline2" onclick="window.print()">
+          <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+          Receipt
+        </button>
+        <button class="btn-outline2" onclick="alert('Transfer ID: '+document.getElementById('rc-id').textContent+'\nStatus: Settled ✓')">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Track Transfer
+        </button>
+        <button class="btn-dark" onclick="resetTransfer()">Send Another</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div style="margin-bottom:8px"><strong>AutoUPI</strong> — Global Payments at UPI Speed</div>
+  <div>GIFT City Regulated · FEMA Compliant · 256-bit Secure · © 2026 AutoUPI</div>
+</footer>
+
+<!-- AI CHAT FAB -->
+<button class="ai-fab" onclick="toggleAI()" id="ai-fab-btn">
+  <svg viewBox="0 0 24 24" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+  <span class="ai-fab-dot"></span>
+</button>
+
+<!-- AI PANEL -->
+<div class="ai-panel" id="ai-panel">
+  <div class="ai-header">
+    <div class="ai-header-left">
+      <div class="ai-avatar">⚡</div>
+      <div>
+        <div class="ai-name">AutoUPI AI</div>
+        <div class="ai-status" id="ai-status-line"><span class="ai-status-dot"></span>Powered by Groq · Always on</div>
+      </div>
+    </div>
+    <button class="ai-close" onclick="toggleAI()">
+      <svg viewBox="0 0 24 24" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <div id="ai-active-banner" style="display:none" class="ai-active-banner">
+    <span class="ai-active-dot"></span>
+    <span id="ai-active-text">Active transfer: ₹50,000 → John Smith (IN → USA)</span>
+  </div>
+  <div class="ai-body" id="ai-body">
+    <div id="ai-welcome-area">
+      <div class="ai-welcome">👋 Hi! I'm AutoUPI AI. Ask me anything about transfers, fees, corridors, or compliance.</div>
+      <div class="ai-try-label">TRY ASKING</div>
+      <div class="ai-chip-row">
+        <button class="ai-suggestion" onclick="sendSuggestion('How fast are AutoUPI transfers?')">How fast are AutoUPI transfers?</button>
+        <button class="ai-suggestion" onclick="sendSuggestion('What corridors are live?')">What corridors are live?</button>
+        <button class="ai-suggestion" onclick="sendSuggestion('Is AutoUPI FEMA compliant?')">Is AutoUPI FEMA compliant?</button>
+        <button class="ai-suggestion" onclick="sendSuggestion('How are fees calculated?')">How are fees calculated?</button>
+      </div>
+    </div>
+    <div class="ai-messages" id="ai-messages"></div>
+  </div>
+  <div class="ai-footer">
+    <input class="ai-input" id="ai-input" type="text" placeholder="Ask about AutoUPI..." onkeydown="if(event.key==='Enter')sendMessage()">
+    <button class="ai-send" onclick="sendMessage()">
+      <svg viewBox="0 0 24 24" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+    </button>
+  </div>
+</div>
+
+<!-- GROQ KEY MODAL -->
+<div class="modal-overlay" id="groq-modal">
+  <div class="modal">
+    <h3>Connect Groq AI</h3>
+    <p>Enter your Groq API key to enable the AI assistant. Get a free key at <strong>console.groq.com</strong> — it takes 30 seconds.</p>
+    <input type="password" id="groq-key-input" placeholder="gsk_..." oninput="validateGroqKey()">
+    <div class="modal-btns">
+      <button class="btn-modal-cancel" onclick="closeGroqModal()">Skip for now</button>
+      <button class="btn-modal-save" id="groq-save-btn" onclick="saveGroqKey()">Save & Connect</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===== STATE =====
+let groqKey = localStorage.getItem('autoupi_groq_key') || '';
+let aiMessages = [];
+let currentDest = {code:'US',name:'USA',cur:'USD',rate:'0.0118'};
+let transferData = {};
+let aiOpen = false;
+let watchingTransfer = false;
+
+// ===== CALCULATOR =====
+const FX = {INR:{USD:0.012,AED:0.044,SGD:0.016,GBP:0.0095},USD:{INR:83.3}};
+function updateCalc(){
+  const send = parseFloat(document.getElementById('calc-send').value)||0;
+  const from = document.getElementById('calc-from').value;
+  const to = document.getElementById('calc-to').value;
+  let rate = 0.012;
+  if(from==='INR'){
+    const rmap = {USD:0.012,AED:0.044,SGD:0.016,GBP:0.0095};
+    rate = rmap[to]||0.012;
+  } else {
+    rate = 83.3;
+  }
+  const recv = (send * rate).toFixed(2);
+  document.getElementById('calc-recv').value = recv;
+  document.getElementById('calc-rate-display').textContent = `1 ${from} = ${rate} ${to}`;
+  const savings = Math.round(send * 0.042);
+  document.getElementById('calc-savings').textContent = `₹${savings.toLocaleString('en-IN')}`;
+}
+function swapCurrencies(){
+  const f=document.getElementById('calc-from');
+  const t=document.getElementById('calc-to');
+  const tmp=f.value;f.value=t.value;t.value=tmp;
+  updateCalc();
+}
+
+// ===== TRANSFER FLOW =====
+function updateTransfer(){
+  const amt = parseFloat(document.getElementById('tf-amount').value)||0;
+  const recv = (amt * parseFloat(currentDest.rate)).toFixed(2);
+  document.getElementById('tf-rate-display').textContent = `1 INR = ${currentDest.rate} ${currentDest.cur}`;
+  document.getElementById('tf-recv-display').textContent = `${currentDest.cur} ${parseFloat(recv).toFixed(2)}`;
+}
+function selectDest(btn,code,name,cur,rate){
+  document.querySelectorAll('.dest-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  currentDest = {code,name,cur,rate};
+  updateTransfer();
+}
+function goToReview(){
+  const amt = parseFloat(document.getElementById('tf-amount').value)||50000;
+  const recv = (amt * parseFloat(currentDest.rate)).toFixed(2);
+  const fee = 250;
+  const savings = Math.round(amt * 0.069);
+  transferData = {
+    amt, recv, fee, savings,
+    name: document.getElementById('tf-name').value||'John Smith',
+    bank: document.getElementById('tf-bank').value||'Bank of America',
+    cur: currentDest.cur,
+    dest: currentDest.name,
+    rate: currentDest.rate
+  };
+  document.getElementById('rv-amount').textContent = `₹${amt.toLocaleString('en-IN')}`;
+  document.getElementById('rv-receiver').textContent = transferData.name;
+  document.getElementById('rv-bank').textContent = transferData.bank;
+  document.getElementById('rv-corridor').textContent = `IN → ${currentDest.code==='US'?'USA':currentDest.name}`;
+  document.getElementById('rv-rate').textContent = `1 INR = ${currentDest.rate} ${currentDest.cur}`;
+  document.getElementById('rv-gets').textContent = `${currentDest.cur} ${parseFloat(recv).toFixed(2)}`;
+  document.getElementById('rv-fee').textContent = `₹${fee}`;
+  document.getElementById('rv-savings').textContent = `₹${savings.toLocaleString('en-IN')}`;
+  showScreen('screen-review');
+  window.scrollTo({top:document.getElementById('transfer').offsetTop-80,behavior:'smooth'});
+}
+function startProcessing(){
+  showScreen('screen-processing');
+  window.scrollTo({top:document.getElementById('transfer').offsetTop-80,behavior:'smooth'});
+  runStages();
+}
+async function runStages(){
+  const stages = [
+    {id:'stage-0',delay:600},
+    {id:'stage-1',delay:700},
+    {id:'stage-2',delay:900},
+    {id:'stage-3',delay:1100,extra:true},
+    {id:'stage-4',delay:1200},
+    {id:'stage-5',delay:900},
+  ];
+  for(let i=0;i<stages.length;i++){
+    const s=stages[i];
+    // Mark previous as done
+    if(i>0){
+      const prev=document.getElementById(stages[i-1].id);
+      prev.classList.remove('active');prev.classList.add('done');
+      prev.querySelector('.stage-icon').innerHTML=`<svg viewBox="0 0 24 24" width="18" height="18" stroke="white" stroke-width="2.5" fill="none"><polyline points="20 6 9 17 4 12"/></svg>`;
+    }
+    // Mark current as active
+    const el=document.getElementById(s.id);
+    el.classList.remove('pending');el.classList.add('active');
+    if(s.extra){
+      document.getElementById('fx-rate-extra').style.display='block';
+      document.getElementById('fx-rate-extra').textContent=`1 INR = ${currentDest.rate} ${currentDest.cur}`;
+    }
+    await delay(s.delay);
+  }
+  // Final done
+  const last=document.getElementById(stages[stages.length-1].id);
+  last.classList.remove('active');last.classList.add('done');
+  last.querySelector('.stage-icon').innerHTML=`<svg viewBox="0 0 24 24" width="18" height="18" stroke="white" stroke-width="2.5" fill="none"><polyline points="20 6 9 17 4 12"/></svg>`;
+  await delay(700);
+  showSuccess();
+}
+function delay(ms){return new Promise(r=>setTimeout(r,ms))}
+function showSuccess(){
+  const d=transferData;
+  const id='AUP-'+Math.random().toString(36).substr(2,8).toUpperCase();
+  document.getElementById('success-sub').textContent=`${d.cur} ${parseFloat(d.recv).toFixed(2)} delivered to ${d.name} in 42s`;
+  document.getElementById('rc-id').textContent=id;
+  document.getElementById('rc-sent').textContent=`₹${d.amt.toLocaleString('en-IN')}`;
+  document.getElementById('rc-recv').textContent=`${d.name} · ${d.bank}`;
+  document.getElementById('rc-got').textContent=`${d.cur} ${parseFloat(d.recv).toFixed(2)}`;
+  document.getElementById('rc-saved').textContent=`₹${d.savings.toLocaleString('en-IN')}`;
+  document.getElementById('ai-summary-text').textContent=`Your ₹${d.amt.toLocaleString('en-IN')} transfer to ${d.name} at ${d.bank} was completed in 42 seconds. Compared to traditional banking channels, you saved approximately ₹${d.savings.toLocaleString('en-IN')} in fees and FX markups.`;
+  showScreen('screen-success');
+  launchConfetti();
+  window.scrollTo({top:document.getElementById('transfer').offsetTop-80,behavior:'smooth'});
+}
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>{s.classList.remove('active')});
+  document.getElementById(id).classList.add('active');
+}
+function resetTransfer(){
+  showScreen('screen-form');
+  window.scrollTo({top:document.getElementById('transfer').offsetTop-80,behavior:'smooth'});
+}
+function goHome(){
+  resetTransfer();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ===== CONFETTI =====
+function launchConfetti(){
+  const colors=['#22c55e','#16a34a','#86efac','#0f172a','#6ee7b7'];
+  for(let i=0;i<50;i++){
+    const el=document.createElement('div');
+    el.className='confetti-piece';
+    el.style.left=Math.random()*100+'vw';
+    el.style.background=colors[Math.floor(Math.random()*colors.length)];
+    el.style.animationDuration=(1.5+Math.random()*2)+'s';
+    el.style.animationDelay=(Math.random()*.5)+'s';
+    el.style.transform=`rotate(${Math.random()*360}deg)`;
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(),3500);
+  }
+}
+
+// ===== AI CHAT =====
+function toggleAI(){
+  aiOpen=!aiOpen;
+  document.getElementById('ai-panel').classList.toggle('open',aiOpen);
+  if(aiOpen && !groqKey){
+    setTimeout(()=>document.getElementById('groq-modal').classList.add('open'),400);
+  }
+}
+function openAI(){
+  if(!aiOpen) toggleAI();
+}
+function aiWatchTransfer(){
+  watchingTransfer=true;
+  const d=transferData;
+  const banner=document.getElementById('ai-active-banner');
+  banner.style.display='flex';
+  document.getElementById('ai-active-text').textContent=`Active transfer: ₹${d.amt?d.amt.toLocaleString('en-IN'):'50,000'} → ${d.name||'John Smith'} (IN → ${currentDest.code==='US'?'USA':currentDest.name})`;
+  document.getElementById('ai-status-line').innerHTML='<span class="ai-status-dot"></span>Watching your transfer';
+  // Auto-message
+  const d2=transferData;
+  const msg=`Here's what you need to know:\n\n* The current exchange rate is 1 INR = ${d2.rate||'0.0118'} ${d2.cur||'USD'}, so ${d2.name||'John'} will receive **${d2.cur||'USD'} ${parseFloat(d2.recv||590).toFixed(2)}**.\n* Our fee for this transfer is **₹${d2.fee||250}**, which is 0.15% of the amount you're sending.\n* By using AutoUPI, you're saving around **₹${(d2.savings||3450).toLocaleString('en-IN')}** compared to traditional bank or SWIFT transfers.\n* Once you confirm the transfer, it will be settled in **approximately 42 seconds**, which is much faster than traditional transfers.\n\nLet me know if you have any questions or if there's anything else I can help with.`;
+  setTimeout(()=>{
+    addBotMessage(msg);
+    document.getElementById('ai-input').placeholder='Ask about this transfer...';
+  },300);
+}
+function sendSuggestion(text){
+  document.getElementById('ai-welcome-area').style.display='none';
+  addUserMessage(text);
+  fetchGroq(text);
+}
+function sendMessage(){
+  const inp=document.getElementById('ai-input');
+  const text=inp.value.trim();
+  if(!text) return;
+  inp.value='';
+  document.getElementById('ai-welcome-area').style.display='none';
+  addUserMessage(text);
+  fetchGroq(text);
+}
+function addUserMessage(text){
+  aiMessages.push({role:'user',content:text});
+  const msgs=document.getElementById('ai-messages');
+  const div=document.createElement('div');
+  div.className='msg user';
+  div.innerHTML=`<div class="msg-bubble">${escHtml(text)}</div>`;
+  msgs.appendChild(div);
+  scrollAI();
+}
+function addBotMessage(text){
+  aiMessages.push({role:'assistant',content:text});
+  const msgs=document.getElementById('ai-messages');
+  const div=document.createElement('div');
+  div.className='msg bot';
+  // Convert **bold** to <strong>
+  const formatted=text.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');
+  div.innerHTML=`<div class="msg-bubble">${formatted}</div>`;
+  msgs.appendChild(div);
+  scrollAI();
+}
+function scrollAI(){
+  const b=document.getElementById('ai-body');
+  b.scrollTop=b.scrollHeight;
+}
+async function fetchGroq(userText){
+  if(!groqKey){
+    addBotMessage("Please add your Groq API key to enable the AI assistant. Click the settings gear or re-open the AI panel to enter your key.");
+    return;
+  }
+  // Show typing
+  const msgs=document.getElementById('ai-messages');
+  const typing=document.createElement('div');
+  typing.className='msg bot';
+  typing.innerHTML=`<div class="typing"><span></span><span></span><span></span></div>`;
+  msgs.appendChild(typing);scrollAI();
+  const sys=`You are AutoUPI AI, a helpful fintech assistant for AutoUPI — a global payments platform that enables instant cross-border transfers from India using UPI rails with GIFT City regulation. You help users understand transfers, fees (0.15% flat), corridors (IN↔UAE, IN↔USA, IN↔SGP, IN↔UK), compliance (FEMA, RBI, LRS), and FX rates. Be concise, accurate, and helpful. Current transfer context: ${JSON.stringify(transferData)}`;
+  try{
+    const resp = await fetch('https://api.groq.com/openai/v1/chat/completions',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':`Bearer ${groqKey}`},
+      body:JSON.stringify({
+        model:'llama3-8b-8192',
+        messages:[{role:'system',content:sys},...aiMessages.slice(-10)],
+        max_tokens:400,temperature:.7
+      })
+    });
+    typing.remove();
+    if(!resp.ok){const e=await resp.json();addBotMessage('Error: '+(e.error?.message||'API error. Check your Groq key.'));return;}
+    const data=await resp.json();
+    const reply=data.choices?.[0]?.message?.content||'Sorry, I could not get a response.';
+    addBotMessage(reply);
+  }catch(e){
+    typing.remove();
+    addBotMessage('Network error. Please check your connection and Groq API key.');
+  }
+}
+function escHtml(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+
+function explainSavings(){
+  openAI();
+  const d=transferData;
+  sendSuggestion(`Explain in detail why I saved ₹${d.savings||3450} on this transfer compared to SWIFT`);
+}
+function feeBreakdown(){
+  openAI();
+  sendSuggestion('Give me a full fee breakdown for this transfer vs a traditional bank wire');
+}
+
+// ===== GROQ KEY =====
+function closeGroqModal(){document.getElementById('groq-modal').classList.remove('open')}
+function validateGroqKey(){
+  const k=document.getElementById('groq-key-input').value.trim();
+  document.getElementById('groq-save-btn').style.opacity=k.startsWith('gsk_')?'1':'0.5';
+}
+function saveGroqKey(){
+  const k=document.getElementById('groq-key-input').value.trim();
+  if(!k){return}
+  groqKey=k;
+  localStorage.setItem('autoupi_groq_key',k);
+  closeGroqModal();
+  addBotMessage('✅ Groq AI connected! Ask me anything about AutoUPI transfers, fees, or corridors.');
+}
+
+// ===== NAV active =====
+window.addEventListener('scroll',()=>{
+  const sections=['#home','#features','#compliance','#pricing','#transfer'];
+  const navMap={'#home':'nav-solutions','#features':'nav-solutions','#compliance':'nav-compliance','#pricing':'nav-pricing','#transfer':'nav-solutions'};
+  let cur='';
+  sections.forEach(id=>{
+    const el=document.querySelector(id);
+    if(el&&window.scrollY>=el.offsetTop-100) cur=id;
+  });
+  document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));
+  if(navMap[cur]) document.getElementById(navMap[cur])?.classList.add('active');
+});
+
+// Init
+updateCalc();
+updateTransfer();
+if(groqKey) console.log('Groq key loaded from storage');
+</script>
+</body>
+</html>

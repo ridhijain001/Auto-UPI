@@ -1,0 +1,293 @@
+/* Custom Styles for AutoUPI */
+
+/* Dot Grid Background */
+.dot-grid {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Glassmorphism Card Override */
+.glass-card {
+  background: rgba(13, 16, 23, 0.65) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Primary Text Gradient */
+.text-gradient-primary {
+  background: linear-gradient(135deg, #a78bfa 0%, #6366f1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Pulsating Connection Node */
+@keyframes pulse-secondary {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 8px rgba(16, 185, 129, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+  }
+}
+.pulse-node {
+  animation: pulse-secondary 2s infinite;
+}
+
+/* Shimmer Effect for Progress Bars */
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+.shimmer {
+  position: relative;
+  overflow: hidden;
+}
+.shimmer::after {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  transform: translateX(-100%);
+  background-image: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.25) 20%,
+    rgba(255, 255, 255, 0.5) 60%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  animation: shimmer 1.5s infinite;
+  content: '';
+}
+
+/* Fade Up Animation */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.fade-up {
+  animation: fade-up 0.5s cubic-bezier(0.16, 1, 0.32, 1) forwards;
+}
+
+/* Custom Scrollbar for Transaction History */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 99px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 99px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Stepper Component Styles */
+.stepper-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.stepper-line {
+  position: absolute;
+  left: 14px;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background: rgba(255, 255, 255, 0.1);
+  z-index: 0;
+}
+.stepper-line-progress {
+  position: absolute;
+  left: 14px;
+  top: 8px;
+  width: 2px;
+  height: 0%;
+  background: var(--secondary);
+  z-index: 1;
+  transition: height 0.4s cubic-bezier(0.16, 1, 0.32, 1);
+}
+.step-node {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  z-index: 2;
+}
+.step-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #1e293b;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  color: #94a3b8;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+.step-node.active .step-icon {
+  background: #1e1b4b;
+  border-color: #6366f1;
+  color: #a78bfa;
+  box-shadow: 0 0 12px rgba(99, 102, 241, 0.4);
+}
+.step-node.completed .step-icon {
+  background: rgba(16, 185, 129, 0.15);
+  border-color: #10b981;
+  color: #10b981;
+}
+.step-info {
+  display: flex;
+  flex-direction: column;
+}
+.step-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #94a3b8;
+  transition: color 0.3s ease;
+}
+.step-node.active .step-title {
+  color: #ffffff;
+}
+.step-node.completed .step-title {
+  color: #10b981;
+}
+.step-desc {
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+/* History saved metrics overlay */
+.savings-metric {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(99, 102, 241, 0.05) 100%);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+/* AutoUPI AI Copilot Workspace styles */
+
+/* Full Screen Overlay */
+.ai-workspace-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 150;
+  background: rgba(8, 10, 16, 0.96);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  display: flex;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s cubic-bezier(0.16, 1, 0.32, 1), visibility 0.3s cubic-bezier(0.16, 1, 0.32, 1);
+}
+.ai-workspace-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Sidebar conversations */
+.ai-sidebar {
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(13, 16, 23, 0.4);
+}
+.ai-sidebar-item {
+  position: relative;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  transition: all 0.2s ease;
+}
+.ai-sidebar-item:hover {
+  background: rgba(99, 102, 241, 0.08);
+  border-color: rgba(99, 102, 241, 0.25);
+  color: #ffffff;
+}
+
+/* Chat Input Field */
+.ai-chat-input-wrapper {
+  background: rgba(13, 16, 23, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+/* Floating AI summons button */
+.floating-copilot-btn {
+  background: linear-gradient(135deg, #6366f1 0%, #a78bfa 100%);
+  box-shadow: 0 0 20px rgba(99, 102, 241, 0.6), 0 0 40px rgba(167, 139, 250, 0.3);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.32, 1);
+}
+.floating-copilot-btn:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 0 25px rgba(99, 102, 241, 0.8), 0 0 50px rgba(167, 139, 250, 0.5);
+}
+
+/* Starter prompts */
+.prompt-tag {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.prompt-tag:hover {
+  background: rgba(99, 102, 241, 0.1);
+  border-color: rgba(99, 102, 241, 0.3);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+/* HUD Panel Gauges */
+.hud-progress-container {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+.risk-badge {
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  color: #10b981;
+}
+.risk-badge.high {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+}
+
+/* Interactive SVG Trend Chart */
+.chart-path {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation: draw-chart 3s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+@keyframes draw-chart {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* AI chat bubble custom highlights */
+.ai-bubble-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
